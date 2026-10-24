@@ -1,0 +1,1630 @@
+MINEGUARD — AI-Powered Predictive Rockfall Monitoring & Early Warning System
+ROLE
+
+You are a senior full-stack engineer, AI/ML engineer, IoT engineer, UI/UX designer, database engineer, and DevOps engineer.
+
+Build a complete, runnable MVP called MINEGUARD for an open-pit mine safety monitoring system.
+
+Do not create only a UI mockup.
+
+Build a functional end-to-end MVP with:
+
+Frontend + Backend + Database + ML Risk Engine + MQTT + ESP32 integration + Alert Engine + realistic demo/simulation mode.
+
+The application must be clean, modular, responsive, easy to run locally in VS Code, and suitable for a hackathon demonstration.
+
+1. PROJECT OBJECTIVE
+
+MINEGUARD is an AI-powered predictive rockfall monitoring and early-warning platform.
+
+The system should:
+
+Collect environmental and slope-related sensor data.
+Receive data from ESP32 through MQTT.
+Store sensor readings in PostgreSQL.
+Process sensor data.
+Send features to an ML model.
+Generate a prototype risk score from 0–100.
+Classify the condition as:
+SAFE
+WARNING
+CRITICAL
+Display the result in a professional dashboard.
+Identify the affected mine zone.
+Generate an alert when risk becomes critical.
+Send a physical alert to an ESP32 buzzer/LED when hardware is connected.
+Provide a simulation mode so the entire MVP can be demonstrated without physical hardware.
+
+IMPORTANT:
+
+This is a prototype/hackathon system.
+
+Do NOT claim that the risk thresholds are certified mining safety standards.
+
+Clearly label prototype risk thresholds and recommended actions as demonstration logic requiring field validation before real-world deployment.
+
+2. CORE ARCHITECTURE
+
+Implement this architecture:
+
+Sensors / Historical Dataset
+↓
+ESP32 / Simulation Engine
+↓
+MQTT / REST API
+↓
+FastAPI Backend
+↓
+PostgreSQL
+↓
+Feature Engineering
+↓
+ML Risk Engine
+↓
+Risk Score 0–100
+↓
+SAFE / WARNING / CRITICAL
+↓
+Alert Engine
+↓
+Dashboard + Notification + ESP32 Buzzer/LED
+
+Frontend:
+
+Home
+Workers
+Mine & Minerals
+Risk Analysis
+Sensors
+Alerts
+
+Backend:
+
+FastAPI
+PostgreSQL
+MQTT subscriber
+ML service
+Risk engine
+Alert engine
+
+3. TECHNOLOGY STACK
+Frontend
+
+Use:
+
+React
+Vite
+Tailwind CSS
+React Router
+Axios
+Recharts
+React-Leaflet / Leaflet
+Lucide React
+
+Create a modern industrial dashboard.
+
+Do NOT use a generic admin-dashboard template.
+
+The design should look like a modern mining safety command center.
+
+Backend
+
+Use:
+
+Python
+FastAPI
+Uvicorn
+SQLAlchemy
+Pydantic
+python-dotenv
+Paho MQTT
+
+Create REST APIs and MQTT processing.
+
+Database
+
+Use:
+
+PostgreSQL
+
+Store:
+
+Mines
+Minerals
+Workers
+Sensors
+Sensor readings
+Risk predictions
+Alerts
+
+Use SQLAlchemy models and proper relationships.
+
+Provide database initialization and seed/demo data.
+
+Machine Learning
+
+Use:
+
+Python
+Pandas
+NumPy
+Scikit-learn
+Joblib
+
+Use a Random Forest model for the first MVP.
+
+Do not over-engineer the ML system.
+
+Create:
+
+preprocessing
+feature engineering
+training
+evaluation
+prediction
+
+Save the trained model locally.
+
+If a real rockfall dataset is unavailable, create a clearly labeled synthetic/demo dataset based on plausible ranges and relationships.
+
+Do not present synthetic data as real-world mining data.
+
+IoT
+
+Use:
+
+ESP32
+MQTT
+Mosquitto
+
+Support:
+
+rainfall
+vibration
+moisture
+displacement
+temperature
+slope angle
+
+The system must also work without physical hardware through a simulation mode.
+
+4. PROJECT STRUCTURE
+
+Create this structure:
+
+MINEGUARD/
+
+frontend/
+public/
+src/
+assets/
+components/
+Sidebar.jsx
+Navbar.jsx
+StatCard.jsx
+RiskCard.jsx
+AlertCard.jsx
+WorkerTable.jsx
+MineralTable.jsx
+SensorCard.jsx
+RiskChart.jsx
+MineMap.jsx
+StatusBadge.jsx
+pages/
+Home.jsx
+Workers.jsx
+MineMinerals.jsx
+RiskAnalysis.jsx
+Sensors.jsx
+Alerts.jsx
+services/
+api.js
+websocket.js
+hooks/
+useSensorData.js
+useRiskData.js
+context/
+MineContext.jsx
+utils/
+riskUtils.js
+App.jsx
+main.jsx
+index.css
+package.json
+vite.config.js
+.env.example
+
+backend/
+app/
+main.py
+core/
+config.py
+database/
+connection.py
+models.py
+schemas/
+worker.py
+mine.py
+mineral.py
+sensor.py
+risk.py
+alert.py
+api/
+workers.py
+mines.py
+minerals.py
+sensors.py
+risk.py
+alerts.py
+services/
+worker_service.py
+mine_service.py
+sensor_service.py
+risk_service.py
+mqtt/
+client.py
+subscriber.py
+ml/
+predictor.py
+alerts/
+alert_engine.py
+requirements.txt
+.env.example
+
+ml/
+data/
+raw/
+sensor_data.csv
+processed/
+notebooks/
+rockfall_analysis.ipynb
+src/
+preprocessing.py
+feature_engineering.py
+train.py
+evaluate.py
+predict.py
+models/
+
+esp32/
+mineguard_esp32/
+mineguard_esp32.ino
+
+database/
+schema.sql
+seed.sql
+
+docs/
+architecture.md
+api.md
+setup.md
+
+README.md
+.gitignore
+docker-compose.yml
+.env.example
+
+5. FRONTEND DESIGN
+
+Create a professional dark industrial UI.
+
+Visual direction:
+
+dark charcoal background
+electric blue/cyan primary accent
+white/light-gray text
+green for SAFE
+amber/yellow for WARNING
+red for CRITICAL
+subtle borders
+clean cards
+modern typography
+responsive layout
+subtle animations
+professional charts
+no excessive neon effects
+no unnecessary gradients
+no clutter
+
+The application should feel like:
+
+Mining Operations Command Center + AI Safety Platform
+
+6. GLOBAL NAVIGATION
+
+Create a persistent sidebar:
+
+MINEGUARD
+
+AI MINE SAFETY
+
+🏠 Home
+👷 Workers
+⛏ Mine & Minerals
+⚠ Risk Analysis
+📡 Sensors
+🚨 Alerts
+
+Also include:
+
+system status
+notification icon
+profile/settings area
+responsive mobile navigation
+7. HOME PAGE
+
+Create:
+
+/
+
+Purpose:
+
+Give the operator an immediate overview of the entire mine.
+
+Include:
+
+Header
+
+MINEGUARD
+
+AI Mine Safety Monitoring
+
+System Status: ONLINE
+
+KPI cards
+
+Total Workers
+
+Active Sensors
+
+Active Alerts
+
+Current Risk
+
+Overall Risk Card
+
+Display:
+
+Risk Score: 72 / 100
+
+WARNING
+
+Show a visual gauge/progress indicator.
+
+Mine Risk Map
+
+Use Leaflet.
+
+Display mine zones:
+
+ZONE-A
+ZONE-B
+ZONE-C
+ZONE-D
+
+Use markers/areas based on risk level.
+
+Recent Alerts
+
+Show:
+
+timestamp
+zone
+alert type
+severity
+status
+Environmental Overview
+
+Show:
+
+rainfall
+moisture
+vibration
+displacement
+temperature
+slope angle
+Risk Trend
+
+Use Recharts.
+
+Show risk over time.
+
+8. WORKERS PAGE
+
+Route:
+
+/workers
+
+Create a worker safety management page.
+
+Show:
+
+Total Workers
+Active Workers
+Warning
+At Risk
+
+Create searchable/filterable table:
+
+Worker ID
+Name
+Zone
+Role
+Status
+Last Seen
+
+Example demo workers:
+
+W001 Arun
+W002 Kumar
+W003 Ravi
+W004 Siva
+
+Use demo data in the database.
+
+Clicking a worker should open a detail panel/modal containing:
+
+Worker ID
+Name
+Zone
+Status
+Last Seen
+Assigned Area
+Safety Status
+
+For MVP, worker location can be simulated.
+
+Clearly label simulated worker locations if used.
+
+9. MINE & MINERALS PAGE
+
+Route:
+
+/mine
+
+Show:
+
+Mine name
+Location
+Area
+Depth
+Number of zones
+Current operating status
+
+Create mineral table:
+
+Mineral
+Zone
+Quantity
+Status
+
+Example demo minerals:
+
+Iron Ore
+Limestone
+Granite
+
+Also display current environmental conditions:
+
+Rainfall
+Moisture
+Temperature
+Vibration
+Displacement
+Slope Angle
+
+Create a visual mine overview.
+
+10. RISK ANALYSIS PAGE
+
+Route:
+
+/risk
+
+This is the most important AI page.
+
+Display:
+
+CURRENT RISK
+
+Risk Score: 82 / 100
+
+CRITICAL
+
+Affected Zone:
+
+ZONE-C
+
+Show risk contributors:
+
+Rainfall
+Vibration
+Moisture
+Displacement
+Temperature
+Slope Angle
+
+Use horizontal contribution bars.
+
+Show:
+
+Risk Trend
+Risk History
+Current Sensor Values
+Affected Zone
+
+Create a clear AI explanation section.
+
+Example:
+
+"Elevated prototype risk is associated with increased displacement, vibration, moisture, and rainfall measurements."
+
+Do not falsely claim causality if the model has not established it.
+
+11. RISK ENGINE
+
+Implement:
+
+Risk score:
+
+0–100
+
+Prototype classification:
+
+0–30 = SAFE
+
+31–70 = WARNING
+
+71–100 = CRITICAL
+
+These values are prototype thresholds only.
+
+Create a centralized risk utility so the same logic is used across the application.
+
+Example:
+
+getRiskLevel(score)
+
+returns:
+
+SAFE
+WARNING
+CRITICAL
+
+Also return:
+
+status color
+label
+severity
+recommended prototype action
+
+12. MACHINE LEARNING PIPELINE
+
+Create:
+
+ml/src/preprocessing.py
+
+ml/src/feature_engineering.py
+
+ml/src/train.py
+
+ml/src/evaluate.py
+
+ml/src/predict.py
+
+Features:
+
+rainfall
+vibration
+moisture
+displacement
+temperature
+slope_angle
+
+Create a demo dataset if required.
+
+Target:
+
+risk class
+
+Train Random Forest.
+
+Evaluate the model using appropriate metrics.
+
+Save model with Joblib.
+
+The backend should load the trained model.
+
+Do not retrain the model for every API request.
+
+Load the model once when appropriate.
+
+13. SENSOR DATA API
+
+Create:
+
+POST /api/sensors/data
+
+Input:
+
+{
+"device_id": "ESP32-01",
+"zone": "ZONE-C",
+"rainfall": 8.5,
+"vibration": 0.62,
+"moisture": 65,
+"displacement": 4.8,
+"temperature": 29,
+"slope_angle": 42
+}
+
+Processing:
+
+Sensor data
+↓
+Validate
+↓
+Store in PostgreSQL
+↓
+Feature preparation
+↓
+ML prediction
+↓
+Risk score
+↓
+Risk classification
+↓
+Save prediction
+↓
+Check alert condition
+↓
+Return result
+
+Response:
+
+{
+"risk_score": 82,
+"risk_level": "CRITICAL",
+"zone": "ZONE-C"
+}
+
+14. API ENDPOINTS
+
+Implement at least:
+
+GET /api/health
+
+GET /api/mine
+
+GET /api/workers
+
+GET /api/workers/{worker_id}
+
+GET /api/minerals
+
+GET /api/sensors/latest
+
+GET /api/sensors/history
+
+POST /api/sensors/data
+
+GET /api/risk/current
+
+GET /api/risk/history
+
+GET /api/alerts
+
+POST /api/alerts/test
+
+GET /api/dashboard/summary
+
+Create clean Pydantic response schemas.
+
+Add proper error handling.
+
+15. DATABASE
+
+Create SQLAlchemy models:
+
+Mine
+
+Mineral
+
+Worker
+
+Sensor
+
+SensorReading
+
+RiskPrediction
+
+Alert
+
+Relationships should be sensible.
+
+Example:
+
+Mine
+→ Zones
+
+Mine
+→ Workers
+
+Mine
+→ Minerals
+
+Sensor
+→ SensorReadings
+
+SensorReading
+→ RiskPrediction
+
+RiskPrediction
+→ Alert
+
+Add indexes where appropriate, especially for timestamp and zone queries.
+
+16. MQTT
+
+Use Mosquitto.
+
+Topic:
+
+mineguard/sensors/{zone}
+
+Example:
+
+mineguard/sensors/ZONE-C
+
+ESP32 publishes JSON.
+
+Backend subscribes.
+
+On receiving MQTT data:
+
+MQTT
+↓
+Validate
+↓
+POST/process internally
+↓
+Database
+↓
+ML
+↓
+Risk
+↓
+Alert
+
+17. ESP32
+
+Create:
+
+esp32/mineguard_esp32/mineguard_esp32.ino
+
+Implement:
+
+Wi-Fi connection
+
+MQTT connection
+
+Sensor reading
+
+JSON payload
+
+MQTT publishing
+
+LED status
+
+Buzzer
+
+Use configurable constants for:
+
+Wi-Fi SSID
+
+Wi-Fi password
+
+MQTT broker
+
+MQTT port
+
+Device ID
+
+Zone
+
+Do not hard-code credentials.
+
+Provide comments showing where credentials should be configured.
+
+If physical sensors are not available, create a simulation mode in the ESP32 code.
+
+18. ALERT ENGINE
+
+Create:
+
+backend/app/alerts/alert_engine.py
+
+Logic:
+
+If SAFE:
+
+No critical alert.
+
+If WARNING:
+
+Create warning notification.
+
+If CRITICAL:
+
+Create critical alert.
+
+Store alert in PostgreSQL.
+
+The frontend should display active alerts.
+
+If ESP32 is connected:
+
+CRITICAL should activate:
+
+Red LED
+
+Buzzer
+
+Do not implement dangerous physical automation.
+
+The buzzer/LED is only a prototype warning indicator.
+
+19. SIMULATION MODE
+
+This is mandatory.
+
+The MVP must work even if ESP32 hardware is unavailable.
+
+Create a backend or frontend simulation mechanism.
+
+Provide buttons:
+
+NORMAL CONDITION
+
+WARNING CONDITION
+
+CRITICAL CONDITION
+
+For example:
+
+NORMAL:
+
+rainfall = low
+vibration = low
+moisture = low
+displacement = low
+
+WARNING:
+
+moderate values
+
+CRITICAL:
+
+higher demonstration values
+
+The simulation should send the data through the SAME backend processing path as real sensor data.
+
+Do not bypass the ML/risk pipeline just to change the UI.
+
+20. LIVE UPDATE
+
+Implement polling or WebSocket updates.
+
+For the MVP, polling every few seconds is acceptable.
+
+The dashboard should update:
+
+Risk Score
+
+Sensor values
+
+Alerts
+
+Risk status
+
+Risk trend
+
+without requiring a full page refresh.
+
+21. DEMO MODE
+
+Create a clear Demo Mode.
+
+Example:
+
+Demo Mode: ON
+
+Allow:
+
+SAFE
+
+WARNING
+
+CRITICAL
+
+simulation.
+
+When the demo condition changes:
+
+Sensor values should change.
+
+Risk should be recalculated.
+
+Dashboard should update.
+
+Alert should be generated.
+
+If ESP32 is connected, buzzer/LED should respond.
+
+This creates a complete hackathon demonstration.
+
+22. CORS
+
+Configure FastAPI CORS for local development.
+
+Frontend:
+
+http://localhost:5173
+
+Backend:
+
+http://localhost:8000
+
+Use environment variables rather than hard-coding production URLs.
+
+23. ENVIRONMENT VARIABLES
+
+Create:
+
+.env.example
+
+Include:
+
+DATABASE_URL=
+MQTT_BROKER=
+MQTT_PORT=
+FRONTEND_URL=
+
+Do not commit real passwords or secrets.
+
+24. DOCKER
+
+Create a simple docker-compose.yml for:
+
+PostgreSQL
+
+Mosquitto
+
+Optionally backend
+
+The project should still be runnable without Docker for beginners.
+
+Document both methods if practical.
+
+25. README
+
+Create a complete README containing:
+
+Project overview
+
+Architecture
+
+Features
+
+Tech stack
+
+Folder structure
+
+Prerequisites
+
+Installation
+
+Environment setup
+
+Database setup
+
+ML training
+
+Backend startup
+
+Frontend startup
+
+MQTT setup
+
+ESP32 setup
+
+Demo mode
+
+API documentation
+
+Testing
+
+Deployment notes
+
+Troubleshooting
+
+26. DEVELOPMENT COMMANDS
+
+The final README should provide commands similar to:
+
+Backend:
+
+python -m venv .venv
+
+Windows:
+
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+
+uvicorn app.main --reload
+
+Frontend:
+
+npm install
+
+npm run dev
+
+ML:
+
+python ml/src/train.py
+
+Document the correct working-directory commands based on the final project structure.
+
+27. TESTING
+
+Implement basic tests.
+
+Test:
+
+Health API
+
+Sensor API
+
+Risk calculation
+
+Risk classification
+
+Database insertion
+
+Alert creation
+
+ML prediction
+
+Frontend API integration
+
+Simulation mode
+
+Also test the complete flow:
+
+Sensor input
+→ API
+→ database
+→ ML
+→ risk
+→ alert
+→ frontend
+
+Fix errors before declaring the MVP complete.
+
+28. ERROR HANDLING
+
+Implement proper handling for:
+
+Database unavailable
+
+MQTT unavailable
+
+Invalid sensor values
+
+Missing sensor fields
+
+ML model unavailable
+
+Invalid worker ID
+
+Invalid mine ID
+
+Frontend API failure
+
+No sensor data
+
+ESP32 disconnected
+
+The UI should show a useful message rather than crashing.
+
+29. SECURITY
+
+For the MVP:
+
+Never hard-code credentials.
+Use .env.
+Validate API input.
+Use CORS correctly.
+Do not expose database credentials.
+Do not expose MQTT credentials.
+Do not trust arbitrary sensor payloads.
+Add basic API validation.
+Keep secrets out of Git.
+
+This is a safety-monitoring prototype, so clearly distinguish between:
+
+Prototype alerting
+
+and
+
+Certified mine safety control systems.
+
+Do not claim that the MVP is production-certified.
+
+30. UI/UX REQUIREMENTS
+
+The UI must be:
+
+Responsive
+
+Desktop-first
+
+Mobile-friendly
+
+Accessible
+
+Fast
+
+Professional
+
+Use consistent:
+
+spacing
+
+typography
+
+cards
+
+buttons
+
+status badges
+
+charts
+
+tables
+
+icons
+
+The risk status should be visually obvious.
+
+SAFE:
+
+green status
+
+WARNING:
+
+amber status
+
+CRITICAL:
+
+red status
+
+Avoid excessive animations.
+
+Use animation only for useful status transitions.
+
+31. HOME DASHBOARD DATA FLOW
+
+Home page should call:
+
+GET /api/dashboard/summary
+
+Return:
+
+workers_count
+
+active_sensors
+
+active_alerts
+
+risk_score
+
+risk_level
+
+latest_sensor_data
+
+zone_risks
+
+recent_alerts
+
+risk_history
+
+Render everything dynamically.
+
+Do NOT hard-code dashboard values except fallback demo data.
+
+32. RISK ANALYSIS DATA FLOW
+
+Risk page should call:
+
+GET /api/risk/current
+
+GET /api/risk/history
+
+GET /api/sensors/latest
+
+Display the actual backend data.
+
+33. WORKER DATA FLOW
+
+Workers page should call:
+
+GET /api/workers
+
+Worker detail:
+
+GET /api/workers/{worker_id}
+
+Use PostgreSQL data.
+
+34. MINE DATA FLOW
+
+Mine page should call:
+
+GET /api/mine
+
+GET /api/minerals
+
+GET /api/sensors/latest
+
+35. VISUAL MINE MAP
+
+Create a simple Leaflet-based mine map.
+
+Use fictional/demo coordinates.
+
+Do not imply the coordinates represent an actual mine.
+
+Display:
+
+ZONE-A
+ZONE-B
+ZONE-C
+ZONE-D
+
+Each zone gets a status based on its current prototype risk.
+
+Clicking a zone should display:
+
+Zone name
+
+Risk score
+
+Risk level
+
+Latest sensor values
+
+Number of workers
+
+Active alerts
+
+36. DEMO DATA
+
+Seed realistic but clearly fictional/demo data:
+
+At least:
+
+1 mine
+
+4 zones
+
+10–20 workers
+
+5–10 sensors
+
+3 minerals
+
+historical sensor readings
+
+historical risk predictions
+
+sample alerts
+
+Use clearly labeled demo information.
+
+37. PERFORMANCE
+
+Keep the MVP lightweight.
+
+Avoid unnecessary libraries.
+
+Avoid microservices.
+
+Avoid Kubernetes.
+
+Avoid blockchain.
+
+Avoid deep learning unless there is a clear demonstrated need.
+
+Use one FastAPI backend.
+
+Use one PostgreSQL database.
+
+Use one React frontend.
+
+Use MQTT for sensor messaging.
+
+Keep architecture simple.
+
+38. DO NOT FAKE THE CORE FUNCTIONALITY
+
+Do not make a dashboard where changing a button simply changes:
+
+"SAFE → WARNING → CRITICAL"
+
+without processing data.
+
+The demo mode should generate sensor values and send them through the actual backend/risk pipeline.
+
+The UI must consume real API responses.
+
+The ML model must actually produce a prediction.
+
+The database must actually store readings.
+
+The alert engine must actually create alerts.
+
+39. BUILD ORDER
+
+Build the application in this exact sequence:
+
+PHASE 1:
+
+Create project structure.
+
+PHASE 2:
+
+Build PostgreSQL models and seed data.
+
+PHASE 3:
+
+Build FastAPI health and CRUD APIs.
+
+PHASE 4:
+
+Create demo dataset.
+
+PHASE 5:
+
+Train Random Forest.
+
+PHASE 6:
+
+Integrate ML prediction with FastAPI.
+
+PHASE 7:
+
+Create risk engine.
+
+PHASE 8:
+
+Create alert engine.
+
+PHASE 9:
+
+Build React layout and navigation.
+
+PHASE 10:
+
+Build Home page.
+
+PHASE 11:
+
+Build Workers page.
+
+PHASE 12:
+
+Build Mine & Minerals page.
+
+PHASE 13:
+
+Build Risk Analysis page.
+
+PHASE 14:
+
+Build Sensors and Alerts pages.
+
+PHASE 15:
+
+Connect frontend to backend.
+
+PHASE 16:
+
+Implement simulation mode.
+
+PHASE 17:
+
+Implement MQTT.
+
+PHASE 18:
+
+Implement ESP32.
+
+PHASE 19:
+
+Implement buzzer/LED.
+
+PHASE 20:
+
+Test entire system.
+
+PHASE 21:
+
+Fix all errors.
+
+PHASE 22:
+
+Prepare README and demo instructions.
+
+40. FINAL END-TO-END DEMO
+
+The final application must demonstrate:
+
+Scenario 1 — SAFE
+
+Sensor values normal.
+
+ML predicts low risk.
+
+Dashboard:
+
+GREEN
+
+Risk Score < prototype warning threshold.
+
+No critical alert.
+
+Scenario 2 — WARNING
+
+Environmental/slope values increase.
+
+ML prediction changes.
+
+Dashboard:
+
+AMBER
+
+Warning alert appears.
+
+Affected zone changes.
+
+Scenario 3 — CRITICAL
+
+Sensor conditions increase further.
+
+ML predicts high risk.
+
+Dashboard:
+
+RED
+
+Critical alert appears.
+
+Affected zone highlighted.
+
+ESP32:
+
+Red LED ON
+
+Buzzer ON
+
+This should happen through the actual application pipeline.
+
+41. FINAL ACCEPTANCE CRITERIA
+
+Do not declare the project complete until all of these work:
+
+[ ] Frontend starts successfully.
+
+[ ] Backend starts successfully.
+
+[ ] PostgreSQL connects.
+
+[ ] Database tables are created.
+
+[ ] Seed data loads.
+
+[ ] ML model trains.
+
+[ ] ML model can predict.
+
+[ ] FastAPI can receive sensor data.
+
+[ ] Sensor data is stored.
+
+[ ] Risk score is generated.
+
+[ ] Risk classification works.
+
+[ ] Alerts are created.
+
+[ ] Home page displays real backend data.
+
+[ ] Workers page works.
+
+[ ] Mine & Minerals page works.
+
+[ ] Risk Analysis page works.
+
+[ ] Charts work.
+
+[ ] Mine map works.
+
+[ ] Simulation mode works.
+
+[ ] MQTT works.
+
+[ ] ESP32 code is provided.
+
+[ ] Buzzer/LED alert logic works.
+
+[ ] API errors are handled.
+
+[ ] README is complete.
+
+[ ] No secrets are committed.
+
+[ ] No broken imports.
+
+[ ] No console errors.
+
+[ ] No backend errors.
+
+[ ] Complete end-to-end demo works.
+
+42. MOST IMPORTANT INSTRUCTION
+
+Do not stop after generating files.
+
+Actually inspect the project.
+
+Install dependencies.
+
+Run the backend.
+
+Run the frontend.
+
+Initialize the database.
+
+Train/test the ML model.
+
+Test APIs.
+
+Test frontend/backend integration.
+
+Test simulation mode.
+
+Test MQTT if available.
+
+Fix errors.
+
+Then provide a final report containing:
+
+What was implemented.
+Final folder structure.
+Technologies used.
+How the system processes data.
+How to run frontend.
+How to run backend.
+How to initialize PostgreSQL.
+How to train the ML model.
+How to run simulation mode.
+How to connect ESP32.
+API endpoints.
+Test results.
+Any remaining limitations.
+
+Do not claim something is working unless you actually tested it.
+
+The final result must be a runnable MINEGUARD MVP, not merely generated source code or a static UI.

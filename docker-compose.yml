@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: mineguard-db
+    environment:
+      POSTGRES_USER: mineguard_user
+      POSTGRES_PASSWORD: mineguard_password
+      POSTGRES_DB: mineguard_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    restart: unless-stopped
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: mineguard-mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: mineguard-backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - mosquitto
+    environment:
+      - DATABASE_URL=postgresql://mineguard_user:mineguard_password@db:5432/mineguard_db
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: mineguard-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
